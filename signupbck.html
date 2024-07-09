@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <h2 class="text-center bg-white">CompuTech Nexus Academy</h2>
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Your navigation bar code here -->
+  </nav>
+  <br><br>
+
+  <div class="container center-form">
+    <div class="form-container">
+      <h1 class="text-center mb-4">Staff Login</h1>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-dark btn-login">Login</button>
+        <a href="#" id="forgotPasswordLink" class="ml-2">Forgot Password?</a>
+      </form>
+
+      <!-- Forgot Password Form (initially hidden) -->
+      <form id="forgotPasswordForm" class="login-form mt-3" style="display: none;">
+        <div class="form-group">
+          <label for="forgotInput">Enter Username or Email:</label>
+          <input type="text" class="form-control" id="forgotInput" name="forgotInput" required>
+        </div>
+        <button type="submit" class="btn btn-dark">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Your footer and other HTML content -->
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Your custom JavaScript -->
+  <script src="slogin.js"></script>
+</body>
+</html>

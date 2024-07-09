@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Profile and Credentials</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload Profile Picture and Credentials</h2>
+        <form id="applicationForm">
+            <label for="applicationNumber">Application Number:</label>
+            <input type="text" id="applicationNumber" name="applicationNumber" required>
+            <button type="button" onclick="loadFileInputs()">Load File Inputs</button>
+        </form>
+        <form id="uploadForm" action="/upload_credentials" method="POST" enctype="multipart/form-data" style="display: none;">
+            <input type="hidden" name="applicationNumber" id="hiddenApplicationNumber">
+            <div id="fileInputs"></div>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <script>
+        function loadFileInputs() {
+            const applicationNumber = document.getElementById('applicationNumber').value;
+            if (!applicationNumber) {
+                alert('Please enter your application number.');
+                return;
+            }
+            
+            const hiddenApplicationNumber = document.getElementById('hiddenApplicationNumber');
+            hiddenApplicationNumber.value = applicationNumber;
+
+            const fileInputs = document.getElementById('fileInputs');
+            const uploadForm = document.getElementById('uploadForm');
+            
+            if (applicationNumber.startsWith('FWEB')) {
+                fileInputs.innerHTML = `
+                    <label for="profilePicture">Profile Picture:</label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept=".png,.jpeg,.jfif" required>
+                    <label for="primaryCertificate">Primary Certificate:</label>
+                    <input type="file" id="primaryCertificate" name="primaryCertificate" accept=".png,.jpeg,.jfif" required>
+                    <label for="higherInstitutionCertificate">Higher Institution Certificate (if applicable):</label>
+                    <input type="file" id="higherInstitutionCertificate" name="higherInstitutionCertificate" accept=".png,.jpeg,.jfif">
+                    <label for="computerCertificate">Computer Certificate (if applicable):</label>
+                    <input type="file" id="computerCertificate" name="computerCertificate" accept=".png,.jpeg,.jfif">
+                `;
+            } else if (applicationNumber.startsWith('FCA')) {
+                fileInputs.innerHTML = `
+                    <label for="profilePicture">Profile Picture:</label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept=".png,.jpeg,.jfif" required>
+                    <label for="primaryCertificate">Primary Certificate:</label>
+                    <input type="file" id="primaryCertificate" name="primaryCertificate" accept=".png,.jpeg,.jfif" required>
+                `;
+            } else {
+                alert('Invalid application number prefix.');
+                return;
+            }
+            
+            uploadForm.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

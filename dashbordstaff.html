@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Staff Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <style>
+    .navbar-nav {
+      margin: auto;
+    }
+  
+    .modal-header-content {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .modal-header-content img {
+      max-width: 80px; /* Adjust logo width */
+      display: block;
+      margin: 0 auto;
+    }
+  
+    .modal-title {
+      margin-bottom: 0;
+      text-align: center; /* Center align modal title */
+    }
+  
+    .modal-footer {
+      justify-content: center;
+    }
+  
+    .signature {
+      margin-top: 20px;
+    }
+  
+    .profile-picture-container {
+      max-width: 200px; /* Adjust width as needed */
+      max-height: 300px; /* Adjust height as needed */
+      margin: 0 auto; /* Center the container */
+      overflow: hidden; /* Ensure the image doesn't overflow */
+      border-radius: 10px; /* Rounded corners for the picture */
+    }
+  
+    .profile-picture {
+      width: 80%; /* Ensure the picture fills the container */
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Center the image within its container */
+      margin: 0 auto;
+    }
+  
+    .card {
+      border-radius: 20px; /* Rounded corners for the card */
+      overflow: hidden;
+    }
+  
+    .profile-card {
+      max-width: 550px; /* Increase the width for profile card */
+      margin: 0 auto; /* Centered content */
+      height: 400px;
+    }
+  
+    .card-body {
+      padding: 1.25rem; /* Padding inside the card body */
+    }
+  
+    .card-title {
+      font-weight: bold;
+    }
+  
+    /* styles for ID card modal */
+    .id-card {
+      text-align: center;
+      padding: 1.25rem;
+      border: 2px solid #000; /* Border around the card */
+      max-width: 300px; /* Portrait orientation */
+      margin: 0 auto; /* Centered content */
+      margin-bottom: 20px; /* Space below the card */
+    }
+    
+    .id-card-back {
+      /* Additional styles for back of ID card */
+      text-align: center; /* Center content */
+      padding: 1.25rem; /* Padding */
+      border: 2px solid #000; /* Border around the card */
+      max-width: 300px; /* Portrait orientation */
+      margin: 0 auto; /* Centered content */
+    }
+  
+    .id-card-logo {
+      max-width: 80px;
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand ml-5 pl-5" href="#">
+      <img src="logo.jpg" alt="CompuTech Nexus Academy Logo" height="30" class="mr-2"> Staff Dashboard </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <!-- Tasks dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle ml-5" href="#" id="navbarDropdownTasks" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tasks </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownTasks">
+            <a class="dropdown-item" href="#">Upload CA Result</a>
+            <a class="dropdown-item" href="#">Upload Exam Result</a>
+            <a class="dropdown-item" href="#">Download CA Result</a>
+            <a class="dropdown-item" href="#">Download Exam Result</a>
+            <a class="dropdown-item" href="#" id="viewIDCard">View ID Card</a>
+          </div>
+        </li>
+        <!-- Logout button -->
+        <li class="nav-item"> 
+          <a class="nav-link ml-5" href="#" id="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <section><!-- Staff Profile -->
+    <div class="container">
+      <h1 class="mt-5">Welcome, <span id="staffName"></span></h1>
+      <div class="card mt-3">
+        <div class="card-body">
+          <h5 class="card-title">Your Details</h5>
+          <p class="card-text" id="staffDetails"></p>
+          <h5 class="card-title">Profile Picture</h5>
+          <div id="profilePictureContainer" class="profile-picture-container">
+            <img id="profilePic" src="" alt="Profile Picture" class="profile-picture">
+          </div>
+          <form id="uploadForm" class="mt-3" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="profilePicUpload">Upload Profile Picture:</label>
+              <input type="file" class="form-control-file" id="profilePicUpload" name="profilePic" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="uploadButton">Upload</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section><!-- End of Staff Profile -->
+
+  <!-- Modal for ID Card -->
+  <div class="modal fade" id="idCardModal" tabindex="-1" role="dialog" aria-labelledby="idCardModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Staff ID Card</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Front of ID Card -->
+          <div class="id-card">
+            <div class="modal-header-content">
+              <img src="logo.jpg" alt="School Logo" class="id-card-logo">
+              <h5 class="modal-title">CompuTech Nexus Academy</h5>
+              <h6 class="modal-title">Staff ID Card</h6>
+            </div>
+            <img src="" id="modalProfilePic" style="max-width: 150px; max-height: 150px;" alt="Profile Picture">
+            <h5 class="card-title mt-3" id="modalStaffName"></h5>
+            <p class="card-text">Email: <span id="modalEmailAddress"></span></p>
+            <div class="signature">
+              <p>Signature: ________________________</p>
+            </div>
+          </div>
+          
+          <!-- Back of ID Card -->
+          <div class="id-card-back">
+            <h5>Usage Policy</h5>
+            <p>This ID card is issued to staff members for identification purposes at CompuTech Nexus Academy. It remains the property of the academy and must be surrendered upon request. The card is non-transferable and should only be used by the authorized individual. For security reasons, it must be signed upon receipt. If found, please return it to:</p>
+            <p>CompuTech Nexus Academy<br>32 Km, Maiduguri Road, Gano 2 Primary School<br>  Dawakin Kudu L.G.A, Kano State, Nigeria.</p>
+            <p>Contact Numbers: 08030909793, 08033643018, 09123754300</p>
+            <p>Email:<a href="mailto:1440shamsusabo@gmail.com">1440shamsusabo@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="window.print()">Print</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Function to fetch staff data and populate profile details
+      function fetchStaffData() {
+        fetch('/session')
+          .then(response => response.json())
+          .then(data => {
+            if (data.loggedin) {
+              document.getElementById('staffName').textContent = data.staff.firstname;
+              document.getElementById('modalStaffName').textContent = data.staff.firstname;
+              document.getElementById('staffDetails').innerHTML = `
+                <strong>First Name:</strong> ${data.staff.firstname}<br>
+                <strong>Surname:</strong> ${data.staff.surname}<br>
+                <strong>Email:</strong> ${data.staff.email}<br>
+                <strong>Qualification:</strong> ${data.staff.highest_qualification}<br>
+                <strong>Specialization:</strong> ${data.staff.specialization}
+              `;
+              document.getElementById('profilePic').src = data.staff.profile_picture || 'default-profile.png';
+              document.getElementById('modalProfilePic').src = data.staff.profile_picture || 'default-profile.png';
+              document.getElementById('modalEmailAddress').textContent = data.staff.email;
+            } else {
+              window.location.href = 'slogin.html'; // Redirect to login if not logged in
+            }
+          });
+      }
+
+      // Fetch initial staff data
+      fetchStaffData();
+
+      // Event listener for profile picture upload form
+      document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('profilePic', document.getElementById('profilePicUpload').files[0]);
+
+        fetch('/uploadProfilePic', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Update staff data with new profile picture URL
+            fetchStaffData();
+
+            // Hide the upload form and button
+            document.getElementById('uploadForm').style.display = 'none';
+            document.getElementById('uploadButton').style.display = 'none';
+
+            // Display the uploaded profile picture on dashboard
+            document.getElementById('profilePic').src = data.profilePicPath;
+
+            // Display the uploaded profile picture on ID card modal
+            document.getElementById('modalProfilePic').src = data.profilePicPath;
+
+            alert('Profile picture uploaded successfully');
+          } else {
+            alert('Error uploading profile picture');
+          }
+        })
+        .catch(error => {
+          console.error('Error uploading profile picture:', error);
+          alert('Error uploading profile picture');
+        });
+      });
+
+      // Event listener for logout
+      document.getElementById('logout').addEventListener('click', function(event) {
+        event.preventDefault();
+        // Perform logout actions here, such as clearing session and redirecting
+        fetch('/logout', {
+          method: 'POST'
+        })
+        .then(response => {
+          if (response.ok) {
+            window.location.href = 'index.html'; // Redirect to login page after logout
+          } else {
+            throw new Error('Logout failed');
+          }
+        })
+        .catch(error => {
+          console.error('Error during logout:', error);
+          alert('Error logging out. Please try again.');
+        });
+      });
+
+      // Event listener for opening ID card modal
+      document.getElementById('viewIDCard').addEventListener('click', function(event) {
+        event.preventDefault();
+        $('#idCardModal').modal('show');
+      });
+    });
+  </script>
+</body>
+</html>
