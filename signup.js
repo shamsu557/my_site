@@ -20,12 +20,14 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
       body: formData,
   })
   .then(response => response.text())
-  .then(result => {
-      document.getElementById('responseMessage').innerHTML = `<div class="alert alert-success" role="alert">${result}</div>`;
-      if (result.includes('successfully')) {
-          setTimeout(() => window.location.href = 'slogin.html', 2000); // Redirect to login page after 2 seconds
-      }
-  })
+.then(result => {
+    document.getElementById('responseMessage').innerHTML = `<div class="alert alert-success" role="alert">${result}</div>`;
+    if (result.includes('successfully')) {
+        alert(result); // Show an alert dialog with the result
+        window.location.href = 'slogin.html'; // Redirect to login page after "OK" is clicked
+    }
+})
+
   .catch(error => {
       console.error('Error:', error);
       document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger" role="alert">An error occurred: ${error.message}</div>`;

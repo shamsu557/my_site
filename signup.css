@@ -13,11 +13,11 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
-    margin-left: 270px;
+    margin-left: 43%;
 }
 .login-question {
     margin-top: 20px;
-    margin-left: 180px;
+    margin-left: 28%;
 }
 .login-question a {
     color: #007bff; /* Bootstrap primary color */
