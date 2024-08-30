@@ -15,44 +15,45 @@
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid pl-3">
-        <a href="#" class="navbar-brand">
-            <img src="logo.jpg" alt="Your Logo">
-        </a>
-        <button type="button" class="navbar-toggler" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar-menu" data-toggle="collapse" data-target="#navbar-menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbar-menu" class="collapse navbar-collapse">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link text-dark" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="about.html">About</a></li>
-                <li class="nav-item"><a class="nav-link text-dark" href="apply.html">Register</a></li>
-                <li class="nav-item dropdown ml-1">
-                  <a class="nav-link dropdown-toggle dropdown-toggle-no-caret text-dark" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</a>
-                  <div class="dropdown-menu bg-light text-center mt-3 pt-3 mr-4" aria-labelledby="navbarDropdown1">
-                      <a class="dropdown-item" href="slogin.html">Staff</a>
-                      <a class="dropdown-item" href="login.html">Student</a>
-                  </div>
-              </li>
-                <li class="nav-item dropdown ml-1">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-no-caret text-dark" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Payments</a>
-                    <div class="dropdown-menu bg-light text-center mt-3 pt-3 mr-4" aria-labelledby="navbarDropdown1">
-                        <a class="dropdown-item" href="app_payment.html">Application Fees</a>
-                        <a class="dropdown-item" href="firstPay.html">First Installment Fee</a>
-                        <a class="dropdown-item" href="secondPay.html">Second Installment Fee</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+      <a href="#" class="navbar-brand">
+        <img src="logo.jpg" alt="Your Logo">
+      </a>
+      <button type="button" class="navbar-toggler" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar-menu" data-toggle="collapse" data-target="#navbar-menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="navbar-menu" class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link text-dark" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link text-dark" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link text-dark" href="apply.html">Register</a></li>
+          <li class="nav-item dropdown ml-1">
+            <a class="nav-link dropdown-toggle dropdown-toggle-no-caret text-dark" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</a>
+            <div class="dropdown-menu bg-light text-center mt-3 pt-3 mr-4" aria-labelledby="navbarDropdown1">
+              <a class="dropdown-item" href="slogin.html">Staff</a>
+              <a class="dropdown-item" href="login.html">Student</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown ml-1">
+            <a class="nav-link dropdown-toggle dropdown-toggle-no-caret text-dark" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Payments</a>
+            <div class="dropdown-menu bg-light text-center mt-3 pt-3 mr-4" aria-labelledby="navbarDropdown1">
+              <a class="dropdown-item" href="app_payment.html">Application Fees</a>
+              <a class="dropdown-item" href="firstPay.html">First Installment Fee</a>
+              <a class="dropdown-item" href="secondPay.html">Second Installment Fee</a>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-</nav>
+  </nav>
   <br><br>
 
   <div class="container center-form">
-    <div class="form-container">
+    <!-- Login Form -->
+    <div class="form-container" id="loginFormContainer">
       <h1 class="text-center mb-4">Staff Login</h1>
       <form id="loginForm" class="login-form">
         <div class="form-group">
-          <label for="username">Username:</label>
+          <label for="username">Username or Staff ID:</label>
           <input type="text" class="form-control" id="username" name="username" required>
         </div>
         <div class="form-group">
@@ -60,23 +61,49 @@
           <input type="password" class="form-control" id="password" name="password" required>
         </div>
         <button type="submit" class="btn btn-dark btn-login">Login</button>
+        <br><br>
+        <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+      </form>
+    </div>
+
+    <!-- Forgot Password Form -->
+    <div class="form-container" id="forgotPasswordForm" style="display: none;">
+      <h1 class="text-center mb-4">Forgot Password</h1>
+      <form id="forgotPasswordFormInner">
+        <div class="form-group">
+          <label for="usernameOrId">Username or Staff ID:</label>
+          <input type="text" class="form-control" id="usernameOrId" name="usernameOrId" required>
+        </div>
+        <button type="submit" class="btn btn-dark btn-login">Submit</button>
+        <br><br>
+        <a href="#" id="backToLoginLink">Back to Login</a>
+      </form>
+    </div>
+
+    <!-- Reset Password Form -->
+    <div class="form-container" id="resetPasswordForm" style="display: none;">
+      <h1 class="text-center mb-4">Reset Password</h1>
+      <form id="resetPasswordFormInner">
+        <div class="form-group">
+          <label for="securityQuestion">Security Question:</label>
+          <input type="text" class="form-control" id="securityQuestion" name="securityQuestion" readonly>
+        </div>
+        <div class="form-group">
+          <label for="securityAnswer">Answer:</label>
+          <input type="text" class="form-control" id="securityAnswer" name="securityAnswer" required>
+        </div>
+        <div class="form-group">
+          <label for="newPassword">New Password:</label>
+          <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn btn-dark btn-login">Reset Password</button>
       </form>
     </div>
   </div>
-
-  <!-- Profile Picture Update Form (Include only if needed) -->
-  <!-- <div class="container center-form">
-    <div class="form-container">
-      <h1 class="text-center mb-4">Update Profile Picture</h1>
-      <form id="updatePicForm" class="update-pic-form">
-        <div class="form-group">
-          <label for="profilePic">Profile Picture:</label>
-          <input type="file" class="form-control" id="profilePic" name="profilePic" required>
-        </div>
-        <button type="submit" class="btn btn-dark btn-update-pic">Update</button>
-      </form>
-    </div>
-  </div> -->
 
   <br><br><br>
 

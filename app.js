@@ -5,6 +5,7 @@ const session = require('express-session');
 const mysql = require('./mysql'); // Ensure this path is correct
 const multer = require('multer');
 const routes = require('./routes');
+const staffRoute = require('./staffRoute');
 const secondPaymntRoute = require('./pay2Route');
 const firstPayRoute = require('./pay1Route');
 const PDFDocument = require('pdfkit');
@@ -16,7 +17,7 @@ app.use(session({
     secret: 'YBdLcGmLbdsYrw9S4PNnaCW3SuHhZ6M0', // Replace with your own secret
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { maxAge: 1 * 60 * 1000 } // Session expires after 1  minutes
 }));
 
 // Multer storage configuration for profile pictures
@@ -54,14 +55,14 @@ app.get('/firstTest', (req, res) => res.sendFile(path.join(__dirname, 'firstTest
 app.get('/secondTest', (req, res) => res.sendFile(path.join(__dirname, 'secondTest.html')));
 app.get('/upload', (req, res) => res.sendFile(path.join(__dirname, 'upload.html')));
 app.get('/apply', (req, res) => res.sendFile(path.join(__dirname, 'apply.html')));
-app.get('/staff', (req, res) => res.sendFile(path.join(__dirname, 'slogin.html')));
+app.get('/staffLogin', (req, res) => res.sendFile(path.join(__dirname, 'slogin.html')));
 app.get('/signup', (req, res) => res.sendFile(path.join(__dirname, 'signup.html')));
 
 // Endpoint to handle staff login
 app.post('/staffLogin', (req, res) => {
     const { username, password } = req.body;
 
-    const query = 'SELECT * FROM staff_data WHERE (username = ? OR email = ?) AND password = ?';
+    const query = 'SELECT * FROM staff_data WHERE (username = ? OR staff_id = ?) AND password = ?';
     mysql.query(query, [username, username, password], (err, results) => {
         if (err) {
             console.error('Database query error:', err);
@@ -78,6 +79,60 @@ app.post('/staffLogin', (req, res) => {
         }
     });
 });
+
+// Endpoint to handle forgot password requests
+app.post('/forgotPassword', (req, res) => {
+    const { usernameOrId } = req.body;
+
+    const query = 'SELECT security_question FROM staff_data WHERE username = ? OR staff_id = ?';
+    mysql.query(query, [usernameOrId, usernameOrId], (err, results) => {
+        if (err) {
+            console.error('Database query error:', err);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+            return;
+        }
+
+        if (results.length > 0) {
+            res.json({ success: true, securityQuestion: results[0].security_question });
+        } else {
+            res.json({ success: false });
+        }
+    });
+});
+// Endpoint to handle password reset requests
+app.post('/resetPassword', (req, res) => {
+    const { securityAnswer, newPassword } = req.body;
+
+    // Convert security answer to uppercase and trim
+    const securityAnswerUpper = securityAnswer.toUpperCase().trim();
+
+    // First, validate the security answer
+    const validateQuery = 'SELECT * FROM staff_data WHERE security_answer = ?';
+    mysql.query(validateQuery, [securityAnswerUpper], (err, results) => {
+        if (err) {
+            console.error('Database query error:', err);
+            res.status(500).json({ success: false, message: 'Internal server error' });
+            return;
+        }
+
+        if (results.length > 0) {
+            // Security answer is correct, now update the password
+            const updateQuery = 'UPDATE staff_data SET password = ? WHERE security_answer = ?';
+            mysql.query(updateQuery, [newPassword, securityAnswerUpper], (err) => {
+                if (err) {
+                    console.error('Database update error:', err);
+                    res.status(500).json({ success: false, message: 'Internal server error' });
+                    return;
+                }
+
+                res.json({ success: true });
+            });
+        } else {
+            res.json({ success: false });
+        }
+    });
+});
+
 
 // Endpoint to handle file uploads for credentials
 app.post('/upload_credentials', upload.fields([
@@ -150,21 +205,7 @@ app.get('/upload_success/:applicationNumber', (req, res) => {
     `);
 });
 
-// Handle profile picture upload for staff
-app.post('/updateProfilePic', upload.single('profilePic'), (req, res) => {
-    if (!req.session.loggedin) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
-    }
 
-    const profilePicPath = `/profile_pics/${req.file.filename}`;
-    const query = 'UPDATE staff_data SET profile_picture = ? WHERE id = ?';
-
-    mysql.query(query, [profilePicPath, req.session.staff.id], (err, results) => {
-        if (err) throw err;
-        req.session.staff.profile_picture = profilePicPath;
-        res.json({ success: true, profilePicPath });
-    });
-});
 
 // Serve the staff dashboard
 app.get('/staff_dashboard', (req, res) => {
@@ -174,23 +215,27 @@ app.get('/staff_dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'staff_dashboard.html'));
 });
 
-// Check session for staff
+// Check session for staff and profile picture 
 app.get('/session', (req, res) => {
     if (req.session.loggedin) {
-        res.json({ loggedin: true, staff: req.session.staff });
+        // Add the profile picture URL to the session data
+        const staff = req.session.staff;
+        const profilePicUrl = staff.staffpic; // URL or path to the profile picture
+        res.json({ 
+            loggedin: true, 
+            staff: { ...staff, profilePicUrl } 
+        });
     } else {
         res.json({ loggedin: false });
     }
 });
-
-// Handle logout
+// Logout endpoint for staff
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            return res.status(500).send('An error occurred while logging out');
+            return res.status(500).send('Error logging out.');
         }
-        res.clearCookie('connect.sid');
-        res.redirect('/login');
+        res.redirect('/slogin.html');
     });
 });
 
@@ -203,12 +248,11 @@ app.get('/checkSession', (req, res) => {
     }
 });
 
-
-
 // Use routes defined and pass the upload instance
 routes(app);
 secondPaymntRoute(app);
 firstPayRoute(app);
+staffRoute(app);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

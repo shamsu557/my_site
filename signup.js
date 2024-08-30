@@ -12,7 +12,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
   }
 
   // Convert security answer to uppercase
-  formData.set('security_answer', formData.get('security_answer').toUpperCase());
+  formData.set('security_answer', formData.get('security_answer').toUpperCase().trim());
 
   // Send the form data, including the profile picture
   fetch('/signup_staff', {
@@ -33,3 +33,22 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
       document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger" role="alert">An error occurred: ${error.message}</div>`;
   });
 });
+ // Scroll to top button (unchanged)
+ let mybutton = document.getElementById("myBtn");
+ window.onscroll = function() {
+     scrollFunction();
+ };
+
+ function scrollFunction() {
+     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+         mybutton.style.display = "block";
+     } else {
+         mybutton.style.display = "none";
+     }
+ }
+
+ // Function to scroll to top when the button is clicked (unchanged)
+ $('#myBtn').click(function() {
+     $('html, body').animate({ scrollTop: 0 }, 'fast');
+     return false;
+ });

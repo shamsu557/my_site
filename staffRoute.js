@@ -6,7 +6,7 @@ module.exports = function (app) {
     // Multer storage configuration for profile pictures
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, './uploads'); // Destination folder for profile pictures
+            cb(null, './'); // Destination folder for profile pictures
         },
         filename: function (req, file, cb) {
             cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname)); // File naming convention
@@ -59,5 +59,6 @@ module.exports = function (app) {
                 res.status(404).send('Email address does not exist in the database.');
             }
         });
+        
     });
 };
