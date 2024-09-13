@@ -10,34 +10,44 @@
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
         }
 
         .container {
-            width: 80%;
+            width: 100%;
             margin: auto;
             padding: 20px;
         }
 
         h1 {
             text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
         }
 
         .diagram {
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: row;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
         }
 
         .block {
             background-color: #fff;
             border: 2px solid #000;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             margin: 10px;
-            width: 200px;
+            width: 150px; /* Reduced width for better fit */
             text-align: center;
+            flex-shrink: 0; /* Prevent shrinking of blocks */
+        }
+
+        .power-supply {
+            background-color: #ffebee;
         }
 
         .input {
@@ -57,9 +67,25 @@
         }
 
         .arrow {
-            font-size: 24px;
-            margin: 10px;
+            font-size: 1.5em;
+            margin: 0 10px;
             font-weight: bold;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .block {
+                width: 120px; /* Further reduced width for small screens */
+                padding: 10px;
+            }
+
+            .arrow {
+                font-size: 1.2em;
+            }
+
+            h1 {
+                font-size: 1.2em;
+            }
         }
     </style>
 </head>
@@ -67,6 +93,10 @@
     <div class="container">
         <h1>Figure 3.0: Block Diagram of the System</h1>
         <div class="diagram">
+            <div class="block power-supply">
+                <h2>Power Supply</h2>
+            </div>
+            <div class="arrow">→</div>
             <div class="block input">
                 <h2>Input</h2>
                 <p>Temperature & Humidity Sensor (DHT11)</p>
@@ -84,6 +114,7 @@
                 <p>Fan/Heater Switching Unit</p>
                 <p>Light Switching Unit</p>
             </div>
+            <div class="arrow">→</div>
             <div class="arrow">→</div>
             <div class="block remote">
                 <h2>Remote Access</h2>
