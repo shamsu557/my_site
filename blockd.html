@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Block Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .block {
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+        }
+
+        .input {
+            background-color: #e0f7fa;
+        }
+
+        .control-unit {
+            background-color: #c8e6c9;
+        }
+
+        .output {
+            background-color: #ffe0b2;
+        }
+
+        .remote {
+            background-color: #d1c4e9;
+        }
+
+        .arrow {
+            font-size: 24px;
+            margin: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Figure 3.0: Block Diagram of the System</h1>
+        <div class="diagram">
+            <div class="block input">
+                <h2>Input</h2>
+                <p>Temperature & Humidity Sensor (DHT11)</p>
+                <p>Light Intensity Sensor (LDR)</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="block control-unit">
+                <h2>Control Unit</h2>
+                <p>ESP32</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="block output">
+                <h2>Output</h2>
+                <p>Display Unit (LCD)</p>
+                <p>Fan/Heater Switching Unit</p>
+                <p>Light Switching Unit</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="block remote">
+                <h2>Remote Access</h2>
+                <p>Webpage Interface</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
