@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      overflow-x: auto; /* Allows horizontal scrolling if needed */
+    }
+
+    .flowchart-container {
+      display: flex;
+      flex-direction: row; /* Arrange items in a row for landscape orientation */
+      flex-wrap: wrap; /* Allows wrapping to next line */
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .start-end {
+      border: 2px solid black;
+      border-radius: 50%;
+      width: 150px;
+      padding: 10px;
+      text-align: center;
+      margin: 10px;
+      background-color: #d1e0e0;
+    }
+
+    .process {
+      border: 2px solid black;
+      width: 150px;
+      padding: 10px;
+      text-align: center;
+      margin: 10px;
+      background-color: #e6f7ff;
+    }
+
+    .decision {
+      border: 2px solid black;
+      width: 150px;
+      padding: 10px;
+      text-align: center;
+      margin: 10px;
+      background-color: #fff8e6;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    .input-output {
+      border: 2px solid black;
+      width: 150px;
+      padding: 10px;
+      text-align: center;
+      margin: 10px;
+      background-color: #d1f7e1;
+      clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+    }
+
+    .manual-control {
+      border: 2px solid black;
+      width: 150px;
+      padding: 10px;
+      text-align: center;
+      margin: 10px;
+      background-color: #f5e6ff;
+      clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+    }
+
+    .arrow {
+      width: 2px;
+      height: 20px;
+      background-color: black;
+      margin: 10px;
+    }
+
+    .arrow-horizontal {
+      width: 20px;
+      height: 2px;
+      background-color: black;
+      margin: 10px;
+    }
+
+    .container-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+  <title>Flowchart</title>
+</head>
+<body>
+  <div class="flowchart-container">
+    <!-- Start (Oval) -->
+    <div class="start-end">Start</div>
+    <div class="arrow"></div>
+
+    <!-- Initialization Phase (Process/Rectangle) -->
+    <div class="process">Initialize Components: LCD, DHT11, LDR, Relays</div>
+    <div class="arrow"></div>
+    <div class="process">Wi-Fi & Server Setup</div>
+    <div class="arrow"></div>
+    <div class="input-output">Read Week Index from EEPROM</div>
+    <div class="arrow"></div>
+
+    <!-- Decision: Authenticate Request? -->
+    <div class="decision">Authenticate Request?</div>
+
+    <!-- Authenticate decision paths -->
+    <div class="container-row">
+      <div class="process">Yes: <br> Web Interface <br> (IP: 192.168.1.100)<br>Username & Password</div>
+      <div class="arrow-horizontal"></div>
+      <div class="process">No: Deny Request</div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- Sensor Data Acquisition (Process) -->
+    <div class="process">Read Sensors: Temp, Humidity, Light Level</div>
+    <div class="arrow"></div>
+
+    <!-- Check Week's Target Temp & Humidity (Process) -->
+    <div class="process">Check Week's Target Temp & Humidity</div>
+    <div class="arrow"></div>
+
+    <!-- Decision: Is Temp/Humidity within Target? -->
+    <div class="decision">Is Temp/Humidity within Target?</div>
+
+    <!-- Temperature & Humidity Control -->
+    <div class="container-row">
+      <div class="process">No: Control Fan/Heater</div>
+      <div class="arrow-horizontal"></div>
+      <div class="process">Yes: Proceed</div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- Decision: Is Light Level > Threshold? -->
+    <div class="decision">Is Light Level > Threshold?</div>
+    <div class="container-row">
+      <div class="process">Turn on Light</div>
+      <div class="arrow-horizontal"></div>
+      <div class="process">Turn off Light</div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <!-- Manual Override (Hexagon) -->
+    <div class="manual-control">Manual Control<br>(Web Interface)</div>
+    <div class="arrow"></div>
+
+    <!-- Weekly Update (Process) -->
+    <div class="process">Update Week Schedule in EEPROM</div>
+    <div class="arrow"></div>
+
+    <!-- Regular Data Updates (Process) -->
+    <div class="process">Send Data to Web Interface</div>
+    <div class="arrow"></div>
+
+    <!-- End (Oval) -->
+    <div class="start-end">End</div>
+  </div>
+</body>
+</html>
